@@ -1,0 +1,87 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Intear Token API",
+        "description": "API to get token prices and account balance",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://tokens-agent.intear.tech"
+        }
+    ],
+    "x-mb": {
+        "account-id": "price.agent.intear.near",
+        "assistant": {
+            "name": "Token Price Assistant",
+            "description": "Assistant for getting token prices, user balances.",
+            "instructions": "You are an assistant that help users get their token prices and balances.",
+            "tools": []
+        }
+    },
+    "paths": {
+        "/token-prices": {
+            "get": {
+                "summary": "Get the prices of multiple tokens",
+                "description": "Returns an array of strings representing the prices of the tokens.",
+                "operationId": "getTokensPrices",
+                "parameters": [
+                    {
+                        "name": "tokens",
+                        "in": "query",
+                        "required": true,
+                        "description": "Comma-separated list of token search terms (symbols, names, addresses, etc.)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of prices in USD and other information about tokens (there may be more than 1 result for a search term if there is no exact match).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/total-balance": {
+            "get": {
+                "summary": "Get the total balance of an account",
+                "description": "Returns the total balance of an account as a string.",
+                "operationId": "getTotalBalance",
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "The account ID to retrieve the balance for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The total balance and separate token balances of the user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

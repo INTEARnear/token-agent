@@ -1,0 +1,21 @@
+[package]
+name = "token-agent"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+warp = "0.3"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+log = "0.4"
+simple_logger = "5"
+anyhow = "1"
+serde_json = "1"
+futures-util = "0.3"
+cached = { version = "0.53", features = [ "async" ] }
+itertools = "0.13"
+lazy_static = "1"
+reqwest = { version = "0.12", features = ["json"] }
+base64 = "0.22"
+bigdecimal = "0.4"
+openssl = { version = "0.10", features = ["vendored"] }
