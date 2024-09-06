@@ -17,5 +17,8 @@ itertools = "0.13"
 lazy_static = "1"
 reqwest = { version = "0.12", features = ["json"] }
 base64 = "0.22"
-bigdecimal = "0.4"
+bigdecimal = { version = "0.4", features = [ "serde" ] }
 openssl = { version = "0.10", features = ["vendored"] }
+
+[features]
+local-debug-agent = []

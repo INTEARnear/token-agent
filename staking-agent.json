@@ -1,0 +1,141 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Staking",
+        "description": "Stake, unstake, and see staking information",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://staking-agent.intear.tech"
+        }
+    ],
+    "x-mb": {
+        "account-id": "stake.agent.intear.near",
+        "assistant": {
+            "name": "Staking",
+            "description": "Stake, unstake, and see staking information",
+            "instructions": "You are an assistant that help users stake, unstake, and see staking information.",
+            "tools": [ { "type": "generate-transaction" } ]
+        }
+    },
+    "paths": {
+        "/staking": {
+            "get": {
+                "summary": "Get the staking information of an account",
+                "description": "Returns the total NEAR balance of an account, staked and unstaked NEAR balance, and pool accounts that the user has delegated to, so it can be used for \"word\" -> pool account id conversion for other tools. IMPORTANT: Don't just assume a pool account id unless provided with a full pool account id ending. Try to use this tool before stake / unstake to make sure that it's correct. If you don't find the pool you're looking for, ask the user to input the full pool account id, but DON'T hallucinate.",
+                "operationId": "staking",
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "The account ID to retrieve the balance for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The total balance, staked and unstaked NEAR balance of the user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stake": {
+            "get": {
+                "summary": "Generate a transaction that stakes NEAR tokens on a given pool",
+                "description": "Returns a transaction that stakes NEAR tokens on a given pool.",
+                "operationId": "stake",
+                "parameters": [
+                    {
+                        "name": "pool_account_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "The account ID of the pool to stake on. Ask the user to input the pool, usually it ends in `.pool.near` or `.poolv1.near`, or ask them to choose from https://nearscope.net/validators if not provided.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": true,
+                        "description": "The amount of NEAR tokens to stake. If not provided, ask the user if they want to stake all their NEAR or specify an amount.",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The transaction that stakes NEAR tokens on a given pool.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/unstake": {
+            "get": {
+                "summary": "Generate a transaction that unstakes NEAR tokens on a given pool",
+                "description": "Returns a transaction that unstakes NEAR tokens on a given pool.",
+                "operationId": "unstake",
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "query",
+                        "required": true,
+                        "description": "The account ID to retrieve the balance for.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pool_account_id",
+                        "in": "query",
+                        "required": false,
+                        "description": "The account ID of the pool to stake on. If not provided, will unstake from all pools until the amount is unstaked. If amount is not provided, will unstake from all pools.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "required": false,
+                        "description": "The amount of NEAR tokens to stake. If not provided, will unstake all staked tokens.",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The transaction that unstakes NEAR tokens on a given pool.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
