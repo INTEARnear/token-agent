@@ -1,7 +1,7 @@
-use crate::utils::dec_format;
 use base64::Engine;
 use cached::proc_macro::cached;
 use lazy_static::lazy_static;
+use near_primitives::serialize::dec_format;
 use near_primitives::types::AccountId;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 

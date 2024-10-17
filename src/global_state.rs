@@ -1,4 +1,3 @@
-use crate::utils::dec_format;
 use std::{
     collections::{HashMap, HashSet},
     sync::Arc,
@@ -6,6 +5,7 @@ use std::{
 
 use bigdecimal::BigDecimal;
 use lazy_static::lazy_static;
+use near_primitives::serialize::dec_format;
 use near_primitives::types::AccountId;
 use serde::{Deserialize, Serialize};
 use tokio::sync::{OnceCell, RwLock};
