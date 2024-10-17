@@ -6,6 +6,7 @@ use std::{
 
 use bigdecimal::BigDecimal;
 use lazy_static::lazy_static;
+use near_primitives::types::AccountId;
 use serde::{Deserialize, Serialize};
 use tokio::sync::{OnceCell, RwLock};
 
@@ -13,7 +14,7 @@ lazy_static! {
     pub static ref TOKENS: OnceCell<Arc<RwLock<Tokens>>> = OnceCell::new();
 }
 
-pub async fn is_spam_token(token: &str) -> bool {
+pub async fn is_spam_token(token: &AccountId) -> bool {
     TOKENS
         .get()
         .unwrap()
@@ -23,7 +24,7 @@ pub async fn is_spam_token(token: &str) -> bool {
         .contains(token)
 }
 
-pub async fn get_ft_metadata(token: &str) -> Option<TokenMetadataWithoutIcon> {
+pub async fn get_ft_metadata(token: &AccountId) -> Option<TokenMetadataWithoutIcon> {
     TOKENS
         .get()
         .unwrap()
@@ -34,7 +35,7 @@ pub async fn get_ft_metadata(token: &str) -> Option<TokenMetadataWithoutIcon> {
         .map(|t| t.metadata.clone())
 }
 
-pub async fn get_ft_price(token: &str) -> Option<f64> {
+pub async fn get_ft_price(token: &AccountId) -> Option<f64> {
     TOKENS
         .get()
         .unwrap()
@@ -47,13 +48,13 @@ pub async fn get_ft_price(token: &str) -> Option<f64> {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Tokens {
-    pub tokens: HashMap<String, Token>,
-    pub spam_tokens: HashSet<String>,
+    pub tokens: HashMap<AccountId, Token>,
+    pub spam_tokens: HashSet<AccountId>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Token {
-    pub account_id: String,
+    pub account_id: AccountId,
     #[serde(with = "serde_bigdecimal")]
     pub price_usd_raw: BigDecimal,
     #[serde(with = "serde_bigdecimal")]

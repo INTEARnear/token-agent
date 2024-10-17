@@ -19,6 +19,8 @@ reqwest = { version = "0.12", features = ["json"] }
 base64 = "0.22"
 bigdecimal = { version = "0.4", features = [ "serde" ] }
 openssl = { version = "0.10", features = ["vendored"] }
+near-primitives = "0.26"
+num-traits = "0.2"
 
 [features]
 local-debug-agent = []

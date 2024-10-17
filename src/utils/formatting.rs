@@ -1,3 +1,5 @@
+use near_primitives::types::AccountId;
+
 use crate::global_state::{get_ft_metadata, get_ft_price};
 
 pub const NEAR_DECIMALS: u32 = 24;
@@ -16,7 +18,9 @@ pub async fn format_near_amount(amount: u128) -> String {
                 format!(
                     " (${:.02})",
                     (amount as f64 / 10u128.pow(NEAR_DECIMALS) as f64)
-                        * get_ft_price(WRAP_NEAR).await.unwrap_or_default()
+                        * get_ft_price(&WRAP_NEAR.parse().unwrap())
+                            .await
+                            .unwrap_or_default()
                 )
             } else {
                 "".to_string()
@@ -25,7 +29,7 @@ pub async fn format_near_amount(amount: u128) -> String {
     }
 }
 
-pub async fn format_tokens(amount: u128, token: &str) -> String {
+pub async fn format_tokens(amount: u128, token: &AccountId) -> String {
     if let Some(metadata) = get_ft_metadata(token).await {
         format!(
             "{}{}",

@@ -1,10 +1,10 @@
 use crate::utils::{
-    dec_format,
     formatting::{format_near_amount, format_tokens},
     rpc::{get_cached_30s, view_account_cached_30s},
 };
 
 use itertools::Itertools;
+use near_primitives::types::{AccountId, BlockHeight};
 use serde::Deserialize;
 
 use crate::global_state::{get_ft_metadata, get_ft_price, is_spam_token};
@@ -13,7 +13,7 @@ use super::staking::format_staking_info;
 
 #[derive(Debug, Deserialize)]
 pub struct WrappedAccountId {
-    pub account_id: String,
+    pub account_id: AccountId,
 }
 
 pub async fn get_total_balance(
@@ -71,21 +71,21 @@ Tokens:
     ))
 }
 
-async fn get_all_fts_owned(account_id: &str) -> Vec<(String, u128)> {
+async fn get_all_fts_owned(account_id: &AccountId) -> Vec<(AccountId, u128)> {
     #[derive(Debug, Deserialize)]
     struct Response {
         tokens: Vec<Token>,
         #[allow(dead_code)]
-        account_id: String,
+        account_id: AccountId,
     }
 
     #[derive(Debug, Deserialize)]
     struct Token {
         #[allow(dead_code)]
-        last_update_block_height: Option<u64>,
-        contract_id: String,
-        #[serde(with = "dec_format")]
-        balance: u128,
+        last_update_block_height: Option<BlockHeight>,
+        contract_id: AccountId,
+        // can be an empty string
+        balance: String,
     }
 
     let url = format!("https://api.fastnear.com/v1/account/{account_id}/ft");
@@ -93,7 +93,7 @@ async fn get_all_fts_owned(account_id: &str) -> Vec<(String, u128)> {
         Ok(response) => response
             .tokens
             .into_iter()
-            .map(|ft| (ft.contract_id, ft.balance))
+            .map(|ft| (ft.contract_id, ft.balance.parse().unwrap_or_default()))
             .collect(),
         Err(e) => {
             log::warn!("Failed to get FTs owned by {account_id}: {e:?}");

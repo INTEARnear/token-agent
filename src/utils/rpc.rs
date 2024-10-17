@@ -2,6 +2,7 @@ use crate::utils::dec_format;
 use base64::Engine;
 use cached::proc_macro::cached;
 use lazy_static::lazy_static;
+use near_primitives::types::AccountId;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 pub const RPC_URLS: &[&str] = &[
@@ -80,7 +81,7 @@ pub struct AccountInfo {
     pub block_hash: String,
 }
 
-pub async fn view_account_not_cached(account_id: &str) -> Result<AccountInfo, anyhow::Error> {
+pub async fn view_account_not_cached(account_id: &AccountId) -> Result<AccountInfo, anyhow::Error> {
     let response = rpc::<_, AccountInfo>(serde_json::json!({
         "jsonrpc": "2.0",
         "id": "dontcare",
@@ -97,7 +98,7 @@ pub async fn view_account_not_cached(account_id: &str) -> Result<AccountInfo, an
 }
 
 #[cached(time = 30, result = true, size = 1000)]
-pub async fn view_account_cached_30s(account_id: String) -> Result<AccountInfo, anyhow::Error> {
+pub async fn view_account_cached_30s(account_id: AccountId) -> Result<AccountInfo, anyhow::Error> {
     view_account_not_cached(&account_id).await
 }
 

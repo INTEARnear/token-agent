@@ -6,6 +6,7 @@ use crate::utils::{
 use std::cmp::Reverse;
 
 use itertools::Itertools;
+use near_primitives::types::AccountId;
 use serde::Deserialize;
 
 // For some reason, unstaked amount always goes +1 yoctonear every time you stake
@@ -13,7 +14,7 @@ pub const NOT_STAKING_THRESHOLD: u128 = 1_000;
 
 #[derive(Debug, Deserialize)]
 pub struct GetStakingInput {
-    pub account_id: String,
+    pub account_id: AccountId,
 }
 
 pub async fn get_staking(input: GetStakingInput) -> Result<impl warp::Reply, warp::Rejection> {
@@ -39,25 +40,25 @@ Staked NEAR: {staked_near}
 }
 
 pub struct StakingData {
-    pub pool_id: String,
+    pub pool_id: AccountId,
     pub staked_amount: u128,
     pub unstaked_amount: u128,
     pub is_unstaked_balance_available: bool,
 }
 
 pub async fn get_delegated_validators(
-    account_id: &String,
+    account_id: &AccountId,
 ) -> Result<Vec<StakingData>, anyhow::Error> {
     #[derive(Debug, Deserialize)]
     struct Response {
         pools: Vec<Pool>,
         #[allow(dead_code)]
-        account_id: String,
+        account_id: AccountId,
     }
 
     #[derive(Debug, Deserialize)]
     struct Pool {
-        pool_id: String,
+        pool_id: AccountId,
         #[allow(dead_code)]
         last_update_block_height: Option<u64>,
     }
@@ -135,7 +136,7 @@ pub async fn get_delegated_validators(
     }
 }
 
-pub async fn format_staking_info(account_id: &String) -> String {
+pub async fn format_staking_info(account_id: &AccountId) -> String {
     let staked_near = get_delegated_validators(account_id).await;
     let staked_near = match staked_near {
         Ok(staked_near) => {

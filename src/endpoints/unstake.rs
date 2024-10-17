@@ -1,12 +1,13 @@
 use bigdecimal::{BigDecimal, FromPrimitive, Zero};
+use near_primitives::types::AccountId;
 use serde::Deserialize;
 
 use super::staking::{get_delegated_validators, NOT_STAKING_THRESHOLD};
 
 #[derive(Debug, Deserialize)]
 pub struct UnstakeInput {
-    pub account_id: String,
-    pub pool_account_id: Option<String>,
+    pub account_id: AccountId,
+    pub pool_account_id: Option<AccountId>,
     pub amount: Option<BigDecimal>,
 }
 
