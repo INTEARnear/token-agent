@@ -16,7 +16,8 @@
             "name": "Staking",
             "description": "Stake, unstake, and see staking information",
             "instructions": "You are an assistant that help users stake, unstake, and see staking information.",
-            "tools": [ { "type": "generate-transaction" } ]
+            "tools": [ { "type": "generate-transaction" } ],
+            "image": "https://www.bitte.ai/agents/stake-logo.jpg"
         }
     },
     "paths": {
@@ -60,7 +61,7 @@
                         "name": "pool_account_id",
                         "in": "query",
                         "required": true,
-                        "description": "The account ID of the pool to stake on. Ask the user to input the pool, usually it ends in `.pool.near` or `.poolv1.near`, or ask them to choose from https://nearscope.net/validators if not provided, or recommend one of these options: 1) shitzu.pool.near - has the highest APR (about 10-11% on average), but 25% of rewards are paid out in memecoins, 2) mintbase.poolv1.near - about 8.5% APY, all is paid in NEAR, is operated by Bitte, 3) buildnear.poolv1.near, about 8.6% APY.",
+                        "description": "The account ID of the pool to stake on. Ask the user to input the pool, usually it ends in `.pool.near` or `.poolv1.near`, or ask them to choose from https://nearscope.net/validators if not provided, or recommend one of these options: 1) shitzu.pool.near - has the highest APR (about 10-11% on average), but 25% of rewards are paid out in memecoins, 2) mintbase.poolv1.near - about 8.5% APY, all is paid in NEAR, is operated by Bitte, 3) buildnear.poolv1.near, about 8.6% APY, 4) readylayerone_staking.poolv1.near, about 8.9% APY. There is no slashing on NEAR Protocol, so funds are always safe, worst-case scenario is that the validator goes down and stops generating APY.",
                         "schema": {
                             "type": "string"
                         }
