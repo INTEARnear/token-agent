@@ -60,7 +60,7 @@
                         "name": "pool_account_id",
                         "in": "query",
                         "required": true,
-                        "description": "The account ID of the pool to stake on. Ask the user to input the pool, usually it ends in `.pool.near` or `.poolv1.near`, or ask them to choose from https://nearscope.net/validators if not provided.",
+                        "description": "The account ID of the pool to stake on. Ask the user to input the pool, usually it ends in `.pool.near` or `.poolv1.near`, or ask them to choose from https://nearscope.net/validators if not provided, or recommend one of these options: 1) shitzu.pool.near - has the highest APR (about 10-11% on average), but 25% of rewards are paid out in memecoins, 2) mintbase.poolv1.near - about 8.5% APY, all is paid in NEAR, is operated by Bitte.",
                         "schema": {
                             "type": "string"
                         }
