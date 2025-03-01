@@ -6,6 +6,7 @@ use near_primitives::types::AccountId;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 pub const RPC_URLS: &[&str] = &[
+    "https://rpc.intear.tech",
     "https://rpc.shitzuapes.xyz",
     "https://rpc.mainnet.near.org",
     "https://near.lava.build",
